@@ -1,1 +1,58 @@
 # POSBinaryProject
+dominick hera
+=
+
+
+to run
+=
+./bin/run ./assets/games.csv
+
+
+to compile
+=
+type 'make' to run the makeFile
+
+
+description
+=
+- the program is a basic Point of Sale system that utilizes a binary search tree for storing all the primary information which the program pulls all the information from, using a hash table to store only the Product ID's when the user attempts to add a product by that ID in which the program will call back to the binary search tree to find the information regarding that product ID and pulling it up. A doubly linked list is used to handle the users shopping cart or invoice which they can add to or remove from without any issues. the program also carries the additions of having the user being able to edit their current customer invoice where they are able to edit the quantity of a certain copy of a game that they have or completely removing a product from the users invoice entirely and returning it to the inventory, the program also allows for having several additional inventory files imported provided they follow the same format as the original games inventory follows. Instead of using an ncurses menu system like previous projects which allowed for too many unknown variables which I didn't want to deal with, the program utilises a simple Switch Case While Loop menu system that easily lets the user use the program from the command line without having to worry about the window size that the program will be used with or whether information will be cleared when other options are selected leaving out alot of potential errors which could reduce the potential usability of the program.
+
+
+
+known limitations
+=
+- if there's an empty line in the data file, the program will skip the line following that empty line
+
+
+testing
+=
+- had major issues with binary tree deletion and had to completely rewrite the deletion function to accomodate all four cases  (2 children/ 1 l/r child/ no children), had originally used findNode function to do this but it was much easier if i had the parent of the node i want to delete so I wrote part of the findNode function into the delete function to do the same thing but also find the parent of that same node
+-had initial issues towards the end of the inventory file where the last fully filled out games line was constantly being repeated due to all the empty commas but was fixed by checking to see if the first item stroked is null to make sure that it doesnt add duplicates unintentionally
+-tried figuring out what was causing the program to skip lines if there's an empty line before it, i was unable to find a solution in time
+-attempted to design a better ncurses menu but previous attempts have been met with messy issues and things not clearing properly, so I made a decision to use a simple switch case while loop that works alot easier and makes everything better for clearing information and prevents information from overlapping and looking sloppy.
+
+
+binary search tree 
+=
+- the binary tree in this project is the primary data structure that maintains all the information regarding all the games that is sorted based on the product name, in which bigger values are shifted to the right of the parent node and lesser values are shifted to the left of the parent node until they reach a currently null location in which they are copied into. Binary Search Trees are supposed to be equally balanced so should the tree shift and become unbalanced, there is a function in place that will rotate the nodes already within the tree so that they meet the requirements to be considered a balanced Binary search tree. It's arguably the second best data structure for searching behind the hash table since it has a complexity of O(log n) in which everytime a comparison is made, over half the tree is removed making search relatively quick just short of of the hash tables search complexity which is O(1).
+
+hash table
+=
+- the hash table in this project is utilized for when the user wants to add a game to their invoice/shopping cart directly by the product ID which the average user generally wont know. It assumes that the user wont be wrong when inputting the product ID although there are failsafes in place to prevent the program from crashing should the user not input a valid product ID. The hash table uses the product ID as the key to find the matching data which is the Product name which then calls the binary search tree to find all the relevant information regarding that product and returns it to the user as well as adding it to their invoice/shopping cart should they decide to purchase it.
+
+
+doubly linked list
+=
+- the doubly linked list in this program is utilized to manage the user's shopping cart/invoice in which they are able to add games to the head of the linked list while other items on the list are shifted down with the addition of any new games the user decides to add. I believe that the doubly linked list was the best data structure to manage the customer invoice due to the fact that while it doesn't have the fastest search in terms of time complexity, the list is not going to be traversed as often as the main inventory data structure is, and when the customer invoice linked list does get traversed, it won't ever be as long as the inventory data structure would be and even then any insertion or deletion would be even faster than in a binary search tree due to the fact that every new product is inserted into the head without traversing the list with the exception of duplicates.
+
+
+Complexity
+=
+- Binary Search Tree - /Insert - O(log n)/Delete - O(log n)/Search - O(log n) - The binary search tree essentially divides the data it needs to search through every time a value is looked at making it one of the quickest and most efficent data structures avaliable, this applies to all of the different ways of accessing the data structure
+- Hash Table - /Insert - O(1)/Delete - O(1)/Search - O(1) - The hash table is the most efficient and least complex data structure considering it doesnt have to search through any information at all, it's given a hash key which is a one size fits all deal where it directly goes to the information provided it exists, this applies to all the different ways of accessing the data structure
+- Doubly Linked List - /Insert - O(1)/O(n)/Delete - O(1)/Search - O(n)/ - doubly linked list is the least efficient of the data structures used because it has to go through the entire data structure until it finds the information that you're searching for and where it is in the list is a total crap shoot so it can increase exponentially based on it's location in the data structure, but considering the list in the program is going to be very small, the complexity in searching through the structure is not as relevant but would be a bigger issue for larger linked lists. Insert would normally just insert on the top but considering it has to search through the list for duplicates, it could potentially reach O(n) since it has to go through the list every time.
+
+additions
+=
+- allows users to edit and delete items from their customer invoice on top of being able to add products to it
+- allows users to add additional inventory files which will then add the contents of those files into the main file system that the program utilises
